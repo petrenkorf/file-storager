@@ -53,8 +53,8 @@ class ModelFileStorager
     {
         $filename = $this->generateFilename($file);
         $file->move($this->folder, $filename);
+        $this->
 
-        
         $this->fileHolder->$attribute = "{$this->folder}/{$filename}";
     }
 
