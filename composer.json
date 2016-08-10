@@ -1,0 +1,19 @@
+{
+    "name": "impacte/filestorager",
+    "description": "Fast file storager for Laravel models",
+    "type": "library",
+    "require": {
+        "laravel/framework": "5.1.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.5",
+        "php-vfs/php-vfs": "^1.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Petris",
+            "email": "petris@impacte.com.br"
+        }
+    ]
+}
