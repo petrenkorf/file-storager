@@ -8,5 +8,5 @@ interface HasFiles
 
     public function getFolder();
 
-    public function getStorageFolderMapping();
+    public function getStorageFolderMap();
 }
