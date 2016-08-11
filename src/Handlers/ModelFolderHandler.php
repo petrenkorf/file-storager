@@ -2,6 +2,7 @@
 
 namespace Impacte\FileStorager\Handlers;
 
+use Impacte\FileStorager\HasFiles;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 
@@ -15,7 +16,7 @@ class ModelFolderHandler
 
     public function __construct(
         Filesystem $filesystem,
-        HasFiles   &$fileHolder
+        HasFiles   $fileHolder
     ) {
         $this->fileHolder = $fileHolder;
         $this->filesystem = $filesystem;

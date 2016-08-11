@@ -5,6 +5,7 @@ namespace Impacte\FileStorager;
 use \File as FileFacade;
 use Illuminate\Filesystem\Filesystem;
 use Mockery;
+use Impacte\FileStorager\Handlers\ModelFolderHandler;
 
 class ModelFolderHandlerTest extends \TestCase
 {
