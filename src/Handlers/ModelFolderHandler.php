@@ -16,10 +16,15 @@ class ModelFolderHandler
 
     public function __construct(
         Filesystem $filesystem,
-        HasFiles   $fileHolder
+        HasFiles   $fileHolder = null
     ) {
-        $this->fileHolder = $fileHolder;
         $this->filesystem = $filesystem;
+        $this->fileHolder = $fileHolder;
+    }
+
+    public function setModel($model)
+    {
+        $this->fileHolder = $model;
     }
 
     public function createFolders()
