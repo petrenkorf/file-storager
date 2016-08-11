@@ -31,7 +31,21 @@ class ModelFileHandler
 
     protected function isModelAttributesValid()
     {
-        return (is_array($this->fileMap) && count($this->fileMap) > 0);
+        $validAttributes = true;
+
+        foreach ($this->fileMap as $folder => $attribute) {
+            if (!$this->isAttributeOk($attribute)) {
+                $validAttributes = false;
+            }
+        }
+
+        return (is_array($this->fileMap) && count($this->fileMap) > 0) &&
+                $validAttributes == true;
+    }
+
+    protected function isAttributeOk($attribute)
+    {
+        return property_exists($this->model, $attribute);
     }
 
     public function persistFile()
