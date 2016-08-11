@@ -4,9 +4,9 @@ namespace Impacte\FileStorager;
 
 interface HasFiles
 {
-    public function getFiles();
+    public function getFile($attributeName);
 
-    public function getFileFields();
+    public function getFolder();
 
-    public function getStorageFolder();
+    public function getStorageFolderMapping();
 }
