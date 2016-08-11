@@ -83,39 +83,19 @@ class ModelFolderHandlerTest extends \TestCase
 
     public function testShouldRemoveAllModelFolders()
     {
-
-    }
-    /*public function testShouldStoreAllModelFiles()
-    {
-        $modelFile = Mockery::mock(UploadedFile::class);
-
-        $modelFile->shouldReceive('move')
-            ->once()
-            ->andReturn(
-                Mockery::mock(File::class)
-            );
-
-        $modelFile->shouldReceive('getClientOriginalExtension')
-            ->once()
-            ->andReturn('png');
-
         $model = Mockery::mock('Impacte\FileStorager\HasFiles');
 
-        $model->shouldReceive('getFiles')
-              ->once()
-              ->andReturn([$modelFile]);
-        
-        $model->shouldReceive('getStorageFolder')
+        $model->shouldReceive('getFolder')
             ->once()
-            ->andReturn('administracao/modelo');
+            ->andReturn('teste');
 
-        $model->shouldReceive('getFileAttributes')
-            ->once()
-            ->andReturn(['arquivo']);
+        $fs = $this->createApplication()->make(Filesystem::class);
 
-        $storager = new ModelFileStorager($this->createApplication()->make(Filesystem::class), $model);
-        $storager->saveAllFiles();
-        
-        $this->assertFileExists('public/administracao/modelo');
-    }*/
+        $storager = new ModelFolderHandler($fs, $model);
+        $storager->createFolders();
+
+        $storager->deleteFolders();
+
+        $this->assertFileNotExists('public/teste');
+    }
 }

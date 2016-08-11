@@ -26,7 +26,6 @@ class ModelFolderHandler
     {
         $folder = $this->getFolderOrFail();
         (is_string($folder)) ? $this->makeDirectory($folder) :$this->createMultipleFolders($folder);
-
     }
 
     protected function getFolderOrFail()
@@ -48,17 +47,37 @@ class ModelFolderHandler
 
     protected function makeDirectory($folder)
     {
-        $folder = self::ROOT_FOLDER.$folder;
+        $folder = $this->getFolderPath($folder);
 
         if (!$this->filesystem->exists($folder)) {
             $this->filesystem->makeDirectory($folder, 0777, true);
         }
     }
 
+    protected function getFolderPath($folder)
+    {
+        return self::ROOT_FOLDER.$folder;
+    }
+
     protected function createMultipleFolders($folders)
     {
         foreach ($folders as $currentFolder) {
             $this->makeDirectory($currentFolder);
+        }
+    }
+
+    public function deleteFolders()
+    {
+        $folder = $this->getFolderOrFail();
+        (is_string($folder)) ? $this->deleteSingleDirectory($folder) :$this->deleteMultipleDirectories($folder);
+    }
+
+    protected function deleteSingleDirectory($folder)
+    {
+        $folder = $this->getFolderPath($folder);
+
+        if ($this->filesystem->exists($folder)) {
+            $this->filesystem->deleteDirectory($folder);
         }
     }
 }
