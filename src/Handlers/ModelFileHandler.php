@@ -50,7 +50,7 @@ class ModelFileHandler
 
     public function persistFile()
     {
-
+        
     }
 
     public function deleteFile()
