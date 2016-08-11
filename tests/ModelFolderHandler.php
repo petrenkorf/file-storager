@@ -5,8 +5,6 @@ namespace Impacte\FileStorager;
 use \File as FileFacade;
 use Illuminate\Filesystem\Filesystem;
 use Mockery;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ModelFolderHandlerTest extends \TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Impacte\FileStorager;
+namespace Impacte\FileStorager\Handlers;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
