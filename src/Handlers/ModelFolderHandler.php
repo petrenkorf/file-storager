@@ -12,7 +12,7 @@ class ModelFolderHandler
 
     protected $filesystem;
 
-    const ROOT_FOLDER = 'public/';
+    const ROOT_FOLDER = '';
 
     public function __construct(
         Filesystem $filesystem,
@@ -55,7 +55,7 @@ class ModelFolderHandler
         $folder = $this->getFolderPath($folder);
 
         if (!$this->filesystem->exists($folder)) {
-            $this->filesystem->makeDirectory($folder, 0777, true);
+            $this->filesystem->makeDirectory($folder, 0755, true);
         }
     }
 

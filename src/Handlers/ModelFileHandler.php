@@ -42,15 +42,8 @@ class ModelFileHandler
         $directory = $this->getAttributeFolder($attribute);
         $file = $this->model->getFile($attribute);
         $name = $this->generateName($file);
-
         $file->move($directory, $name);
-
         $this->model->$attribute = $directory."/".$name;
-    }
-
-    protected function updateModel($directory, $name)
-    {
-        //$this->model->
     }
 
     public function getAttributeFolder($attribute)
@@ -61,9 +54,6 @@ class ModelFileHandler
 
     public function generateName($file)
     {
-        return str_random(8).".".$file->getExtension();
+        return str_random(8).".".$file->guessExtension();
     }
-
-
-    
 }
