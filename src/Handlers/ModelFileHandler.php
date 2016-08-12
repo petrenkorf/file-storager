@@ -8,7 +8,7 @@ class ModelFileHandler
 {
     protected $model;
 
-    protected $fileMap;
+    protected $fileMap = [];
 
     public function __construct(HasFiles &$model = null)
     {
@@ -22,33 +22,48 @@ class ModelFileHandler
 
     public function persistAllFiles()
     {
-        $this->getFileMap();
+        $this->validate();
+    }
 
-        if (!$this->isModelAttributesValid()) {
+    public function validate()
+    {
+        $this->fileMap = $this->model->getStorageFolderMap();
+
+        if (!$this->isValidStorageMap()) {
             throw new \UnexpectedValueException('Model attributes must be of type string');
         }
     }
 
-    protected function isModelAttributesValid()
+    protected function isValidStorageMap()
     {
-        $validAttributes = true;
+        if (!is_array($this->fileMap) || empty($this->fileMap)) {
+            return false;
+        }
+
+        return $this->validateEachAttributes();
+    }
+
+    protected function validateEachAttributes()
+    {
+        $valid = true;
 
         foreach ($this->fileMap as $folder => $attribute) {
-            if (!$this->isAttributeOk($attribute)) {
-                $validAttributes = false;
+            if (!$this->isValidAttribute($folder, $attribute)) {
+                $valid = false;
             }
         }
 
-        return (is_array($this->fileMap) && count($this->fileMap) > 0) &&
-                $validAttributes == true;
+        return $valid;
     }
 
-    protected function isAttributeOk($attribute)
+    protected function isValidAttribute($folder, $attribute)
     {
-        return property_exists($this->model, $attribute);
+        return property_exists($this->model, $attribute) &&
+               isset($this->model->$attribute) &&
+               $this->model->$attribute != null;
     }
 
-    public function persistFile()
+    /*public function persistFile()
     {
         
     }
@@ -61,10 +76,11 @@ class ModelFileHandler
     public function deleteAllFiles()
     {
 
-    }
+    }*/
 
-    protected function getFileMap()
+    /*protected function generateFileName($file)
     {
-        $this->fileMap = $this->model->getStorageFolderMap();
-    }
+        return dd($file->getMimeType());
+        //return str_random(12).".".$file->getClientOriginalExtension();
+    }*/
 }

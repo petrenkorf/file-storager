@@ -16,8 +16,9 @@ class ModelFileHandlerTest extends TestCase
 
     /**
      * @expectedException UnexpectedValueException
+     * @dataProvider invalidFileAttributeProvider
      */
-    public function testShouldThrowExceptionWhenGettingNonFileAttribute()
+    public function testShouldValidateModelReturn($map)
     {
         $model = Mockery::mock('Impacte\FileStorager\HasFiles');
 
@@ -27,10 +28,40 @@ class ModelFileHandlerTest extends TestCase
 
         $model->shouldReceive('getStorageFolderMap')
             ->once()
-            ->andReturn(1);
+            ->andReturn($map);
 
         $fileHandler = new ModelFileHandler();
         $fileHandler->setModel($model);
-        $fileHandler->persistAllFiles();
+        $fileHandler->validate();
+    }
+
+    public function invalidFileAttributeProvider()
+    {
+        return [
+            [1],
+            [[]],
+            [''],
+        ];
+    }
+
+    /**
+     * @expectedException UnexpectedValueException
+     * @dataProvider invalidFileAttributeProvider
+     */
+    public function testShouldThrowExceptionWhenAttributeDoesntExists()
+    {
+        $model = Mockery::mock('Impacte\FileStorager\HasFiles');
+
+        $model->shouldReceive('getFileAttributes')
+            ->once()
+            ->andReturn(1);
+
+        $model->shouldReceive('getStorageFolderMap')
+            ->once()
+            ->andReturn(['folder' => 2]);
+
+        $fileHandler = new ModelFileHandler();
+        $fileHandler->setModel($model);
+        $fileHandler->validate();
     }
 }
