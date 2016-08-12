@@ -46,7 +46,7 @@ class ModelFileHandlerTest extends TestCase
 
     /**
      * @expectedException UnexpectedValueException
-     * @dataProvider invalidFileAttributeProvider
+     * @dataProvider nonExistentAttributeProvider
      */
     public function testShouldThrowExceptionWhenAttributeDoesntExists()
     {
@@ -63,5 +63,12 @@ class ModelFileHandlerTest extends TestCase
         $fileHandler = new ModelFileHandler();
         $fileHandler->setModel($model);
         $fileHandler->validate();
+    }
+
+    public function nonExistentAttributeProvider()
+    {
+        return [
+	    [['folder' => 2]]
+	];
     }
 }
