@@ -13,74 +13,57 @@ class ModelFileHandler
     public function __construct(HasFiles &$model = null)
     {
         $this->model = $model;
-    }
-
-    public function setModel($model)
-    {
-        $this->model = $model;
-    }
-
-    public function persistAllFiles()
-    {
-        $this->validate();
-    }
-
-    public function validate()
-    {
         $this->fileMap = $this->model->getStorageFolderMap();
-
-        if (!$this->isValidStorageMap()) {
-            throw new \UnexpectedValueException('Model attributes must be of type string');
-        }
     }
 
-    protected function isValidStorageMap()
+    public function isValid()
     {
-        if (!is_array($this->fileMap) || empty($this->fileMap)) {
+        if ( !is_array($this->model->getStorageFolderMap()) ||
+            !$this->validateAttributes()) {
             return false;
         }
-
-        return $this->validateEachAttributes();
+        
+        return true;
     }
 
-    protected function validateEachAttributes()
+    protected function validateAttributes()
     {
-        $valid = true;
-
-        foreach ($this->fileMap as $folder => $attribute) {
-            if (!$this->isValidAttribute($folder, $attribute)) {
-                $valid = false;
+        foreach ($this->model->getFileAttributesToArray() as $currentAttribute) {
+            if ($this->model->getFileAttribute($currentAttribute) == null) {
+                return false;
             }
         }
 
-        return $valid;
+        return true;
     }
 
-    protected function isValidAttribute($folder, $attribute)
+    public function saveFile($attribute)
     {
-        return property_exists($this->model, $attribute) &&
-               isset($this->model->$attribute) &&
-               $this->model->$attribute != null;
+        $directory = $this->getAttributeFolder($attribute);
+        $file = $this->model->getFile($attribute);
+        $name = $this->generateName($file);
+
+        $file->move($directory, $name);
+
+        $this->model->$attribute = $directory."/".$name;
     }
 
-    /*public function persistFile()
+    protected function updateModel($directory, $name)
     {
-        
+        //$this->model->
     }
 
-    public function deleteFile()
+    public function getAttributeFolder($attribute)
     {
-
+        $tempFolderMap = array_flip($this->fileMap);
+        return $tempFolderMap[$attribute];
     }
 
-    public function deleteAllFiles()
+    public function generateName($file)
     {
+        return str_random(8).".".$file->getExtension();
+    }
 
-    }*/
 
-    /*protected function generateFileName($file)
-    {
-        return dd($file->getMimeType());
-        //return str_random(12).".".$file->getClientOriginalExtension();
-    }*/
+    
 }
