@@ -12,6 +12,7 @@ class ModelFolderHandler
 
     protected $filesystem;
 
+    // TODO move to config file
     const ROOT_FOLDER = '';
 
     public function __construct(
@@ -54,6 +55,7 @@ class ModelFolderHandler
     {
         $folder = $this->getFolderPath($folder);
 
+        echo $folder."\n";
         if (!$this->filesystem->exists($folder)) {
             $this->filesystem->makeDirectory($folder, 0755, true);
         }
